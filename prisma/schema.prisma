@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  directUrl         = env("DIRECT_URL")
+}
+
+enum CrewStatus {
+  ONBOARD
+  ONSHORE
+  INACIVE
+}
+enum Role {
+  NORMAL_USER
+  ADMIN
+  SUPER_ADMIN
+}
+enum VesselStatus {
+  DOCKED
+  INACTIVE
+  OFFSHORE
+  UNSET
+}
+enum CrewChangeStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+enum DocumentStatus {
+  VALID
+  EXPIRED
+  EXPIRING
+}
+
+model Users {
+  id              Int       @id @default(autoincrement())
+  firstName       String
+  middleName      String?
+  lastName        String
+  mobile          String
+  email           String?   @unique
+  passportURI     String?   @unique
+  role            Role      @default(NORMAL_USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Crew {
+  id              Int       @id @default(autoincrement())
+  firstName       String
+  middleName      String?
+  lastName        String
+  dateOfBirth     String
+  address         String
+  mobile          String
+  email           String?   @unique
+  passportURI     String?    @unique
+  position        String
+  documents       Documents[]
+  vessel          Vessels  @relation(fields: [vesselId], references: [id])
+  vesselId        Int      @unique
+  currentStatus   CrewStatus @default(ONSHORE)
+  incomingCrewChanges     CrewChanges[] @relation("Incoming")
+  outgoingCrewChanges     CrewChanges[] @relation("Outgoing")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Vessels {
+  id            Int       @id @default(autoincrement())
+  name          String
+  currentField  String?
+  currentClient String?
+  imsiNo        String?
+  crewChanges   CrewChanges[]
+  currentCrew   Crew[]
+  currentStatus VesselStatus  @default(UNSET)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model CrewChanges  {
+  id              Int  @id @default(autoincrement())
+  date            DateTime
+  vesselId        Int @unique
+  vessel Vessels  @relation(fields: [vesselId], references: [id])
+  currentStatus   CrewChangeStatus @default(PENDING)
+  incomingCrew    Crew[]  @relation("Incoming")
+  outgoingCrew    Crew[]  @relation("Outgoing")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Categories {
+  id          Int       @id @default(autoincrement())
+  name        String    
+  parentId    Int?
+  document    Documents?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Documents {
+  id                   Int      @id @default(autoincrement())
+  categoryId           Int      @unique
+  ownerId              Int      @unique
+  issueDate            String
+  expiryDate           String
+  certificateNumber    String
+  category             Categories @relation(fields: [categoryId], references: [id])
+  owner                Crew     @relation(fields: [ownerId], references: [id])
+  documentURI          String
+  currentStatus        DocumentStatus @default(VALID)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime @updatedAt
+}
