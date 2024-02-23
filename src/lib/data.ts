@@ -1,19 +1,19 @@
 export const categories = [
-	{ name: 'Client Specific Cert (BOSIET, HUET, N1, N2...)' },
-	{ name: 'Deck' },
-	{ name: 'DP Maintenance' },
-	{ name: 'DP Specific Certificate' },
-	{ name: 'Flagstate' },
-	{ name: 'Medical / Vaccination' },
-	{ name: 'Other (CV and Other Certificates)' },
-	{ name: 'Seaman Book' },
-	{ name: 'Skills (banksman, fitter...)' },
-	{ name: 'STCW' },
-	{ name: 'STCW (COC)' },
-	{ name: 'STCW (CoC, FRC, Crowd Management, GMDSS, etc)' },
-	{ name: 'STCW (GOC/GMDSS)' },
-	{ name: 'Travel Documents' },
-	{ name: 'MISC' },
+	{ name: 'Client Specific Cert (BOSIET, HUET, N1, N2...)', id: 1 },
+	{ name: 'Deck', id: 2 },
+	{ name: 'DP Maintenance', id: 3 },
+	{ name: 'DP Specific Certificate', id: 4 },
+	{ name: 'Flagstate', id: 5 },
+	{ name: 'Medical / Vaccination', id: 6 },
+	{ name: 'Other (CV and Other Certificates)', id: 7 },
+	{ name: 'Seaman Book', id: 8 },
+	{ name: 'Skills (banksman, fitter...)', id: 9 },
+	{ name: 'STCW', id: 10 },
+	{ name: 'STCW (COC)', id: 11 },
+	{ name: 'STCW (CoC, FRC, Crowd Management, GMDSS, etc)', id: 12 },
+	{ name: 'STCW (GOC/GMDSS)', id: 13 },
+	{ name: 'Travel Documents', id: 14 },
+	{ name: 'MISC', id: 15 },
 ];
 
 export const subCategories = [
@@ -102,5 +102,3 @@ export const subCategories = [
 		parentId: 15,
 	},
 ];
-
-export const documents = [{}];
